@@ -2,6 +2,7 @@ import { useState, useEffect, useMemo, useCallback } from 'react'
 import { personalData } from './data/portfolioData'
 import fotoPerfil from './assets/perfil.jpg'
 import './App.css'
+import { FaGithub, FaLinkedin, FaEnvelope } from 'react-icons/fa'
 
 const CATEGORIAS = ['Todos', 'React', 'Python', 'Arquitectura']
 
@@ -179,46 +180,46 @@ function App() {
       </section>
 
       {/* CONTACTO */}
-      <section id="contacto" className="section-container contact-section">
-        <h2 className="section-title">¿Hablamos?</h2>
-        <p className="section-subtitle">Puedes escribirme o contactarme por mis redes profesionales</p>
+<section id="contacto" className="section-container contact-section">
+  <h2 className="section-title">¿Hablamos?</h2>
+  <p className="section-subtitle">Puedes escribirme o contactarme por mis redes profesionales</p>
 
-        <div className="contact-links">
-          <a
-            href={personalData.contacto.github}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="contact-card"
-          >
-            <span className="contact-icon">💻</span>
-            <div>
-              <strong>GitHub</strong>
-              <p>Revisa mis repositorios</p>
-            </div>
-          </a>
+  <div className="contact-links">
+    <a
+      href={personalData.contacto.github}
+      target="_blank"
+      rel="noopener noreferrer"
+      className="contact-card"
+    >
+      <FaGithub className="contact-icon" />
+      <div>
+        <strong>GitHub</strong>
+        <p>Revisa mis repositorios</p>
+      </div>
+    </a>
 
-          <a
-            href={personalData.contacto.linkedin}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="contact-card"
-          >
-            <span className="contact-icon">💼</span>
-            <div>
-              <strong>LinkedIn</strong>
-              <p>Conectemos en red</p>
-            </div>
-          </a>
+    <a
+      href={personalData.contacto.linkedin}
+      target="_blank"
+      rel="noopener noreferrer"
+      className="contact-card"
+    >
+      <FaLinkedin className="contact-icon" />
+      <div>
+        <strong>LinkedIn</strong>
+        <p>Conectemos en red</p>
+      </div>
+    </a>
 
-          <a href={`mailto:${personalData.contacto.email}`} className="contact-card">
-            <span className="contact-icon">✉️</span>
-            <div>
-              <strong>Correo Institucional</strong>
-              <p>{personalData.contacto.email}</p>
-            </div>
-          </a>
-        </div>
-      </section>
+    <a href={`mailto:${personalData.contacto.email}`} className="contact-card">
+      <FaEnvelope className="contact-icon" />
+      <div>
+        <strong>Correo Institucional</strong>
+        <p>{personalData.contacto.email}</p>
+      </div>
+    </a>
+  </div>
+</section>
 
       <footer className="footer">
         <p>© {new Date().getFullYear()} {personalData.nombre} — Desarrollado con React & Vite</p>

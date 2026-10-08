@@ -471,7 +471,9 @@ body {
 }
 
 .contact-icon {
-  font-size: 1.5rem;
+  font-size: 1.6rem;
+  color: var(--primary);
+  flex-shrink: 0;
 }
 
 .contact-card strong {
@@ -512,4 +514,5 @@ body {
     flex-direction: column;
     gap: 16px;
   }
+  
 }
