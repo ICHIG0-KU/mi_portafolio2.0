@@ -1,12 +1,19 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { personalData } from './data/portfolioData'
 import './App.css'
 
 function App() {
   const [likes, setLikes] = useState(0)
   const [filtro, setFiltro] = useState('Todos')
+  
+  // ESTADO PARA EL TEMA (Oscuro por defecto)
+  const [darkMode, setDarkMode] = useState(true)
 
-  // Filtrado dinámico de proyectos
+  // Sincroniza el atributo data-theme en el HTML cada vez que cambia el estado
+  useEffect(() => {
+    document.documentElement.setAttribute('data-theme', darkMode ? 'dark' : 'light')
+  }, [darkMode])
+
   const proyectosFiltrados = filtro === 'Todos'
     ? personalData.proyectos
     : personalData.proyectos.filter(p => p.categoria === filtro || p.tecnologias.includes(filtro))
@@ -15,18 +22,28 @@ function App() {
 
   return (
     <div className="portfolio-container">
-      {/* NAVBAR */}
+      {/* NAVBAR CON BOTÓN DE TEMA */}
       <header className="navbar">
         <div className="nav-brand">&lt;{personalData.nombre.split(' ')[0]} /&gt;</div>
-        <nav className="nav-links">
+        
+        <nav className="nav-links" style={{ display: 'flex', alignItems: 'center', gap: '20px' }}>
           <a href="#sobre-mi">Sobre mí</a>
           <a href="#experiencia">Trayectoria</a>
           <a href="#proyectos">Proyectos</a>
           <a href="#contacto">Contacto</a>
+
+          {/* BOTÓN MODO CLARO / OSCURO */}
+          <button 
+            type="button" 
+            className="theme-toggle-btn"
+            onClick={() => setDarkMode(!darkMode)}
+          >
+            {darkMode ? ' Claro' : ' Oscuro'}
+          </button>
         </nav>
       </header>
 
-      {/* HERO SECTION */}
+      {/* HERO SECTION / PRESENTACIÓN */}
       <section id="sobre-mi" className="hero-section">
         <div className="hero-content">
           <span className="badge-status">🟢 Disponible para proyectos & prácticas</span>

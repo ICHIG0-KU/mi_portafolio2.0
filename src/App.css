@@ -1,3 +1,4 @@
+
 /* RESET & VARIABLES GENERALES */
 :root {
   --bg-dark: #0b1120;
@@ -9,6 +10,56 @@
   --text-muted: #94a3b8;
   --border: rgba(255, 255, 255, 0.08);
   --radius: 12px;
+}
+/* VARIABLES BASE (TEMA OSCURO POR DEFECTO) */
+:root {
+  --bg-dark: #0b1120;
+  --bg-card: #1e293b;
+  --primary: #38bdf8;
+  --primary-hover: #0284c7;
+  --text-main: #f8fafc;
+  --text-muted: #94a3b8;
+  --border: rgba(255, 255, 255, 0.08);
+  --radius: 12px;
+}
+
+/* PALETA PARA TEMA CLARO */
+[data-theme='light'] {
+  --bg-dark: #f8fafc;
+  --bg-card: #ffffff;
+  --primary: #0284c7;
+  --primary-hover: #0369a1;
+  --text-main: #0f172a;
+  --text-muted: #475569;
+  --border: rgba(0, 0, 0, 0.12);
+}
+
+body {
+  background-color: var(--bg-dark);
+  color: var(--text-main);
+  font-family: 'Inter', system-ui, -apple-system, sans-serif;
+  margin: 0;
+  padding: 0;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+/* BOTÓN PARA CAMBIAR DE TEMA */
+.theme-toggle-btn {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  color: var(--text-main);
+  padding: 8px 14px;
+  border-radius: 20px;
+  cursor: pointer;
+  font-size: 0.9rem;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  transition: all 0.2s ease;
+}
+
+.theme-toggle-btn:hover {
+  border-color: var(--primary);
 }
 
 body {
