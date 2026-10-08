@@ -1,94 +1,116 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useMemo, useCallback } from 'react'
 import { personalData } from './data/portfolioData'
+import fotoPerfil from './assets/perfil.jpg'
 import './App.css'
+
+const CATEGORIAS = ['Todos', 'React', 'Python', 'Arquitectura']
 
 function App() {
   const [likes, setLikes] = useState(0)
   const [filtro, setFiltro] = useState('Todos')
-  
-  // ESTADO PARA EL TEMA (Oscuro por defecto)
   const [darkMode, setDarkMode] = useState(true)
 
-  // Sincroniza el atributo data-theme en el HTML cada vez que cambia el estado
+  // Sincroniza el tema con el atributo data-theme en el documento HTML
   useEffect(() => {
     document.documentElement.setAttribute('data-theme', darkMode ? 'dark' : 'light')
   }, [darkMode])
 
-  const proyectosFiltrados = filtro === 'Todos'
-    ? personalData.proyectos
-    : personalData.proyectos.filter(p => p.categoria === filtro || p.tecnologias.includes(filtro))
+  // Memoiza el filtrado para evitar recalcularlo en re-renders innecesarios
+  const proyectosFiltrados = useMemo(() => {
+    if (filtro === 'Todos') return personalData.proyectos
+    return personalData.proyectos.filter(
+      (p) => p.categoria === filtro || p.tecnologias.includes(filtro)
+    )
+  }, [filtro])
 
-  const categorias = ['Todos', 'React', 'Python', 'Arquitectura']
+  // Función memoizada para alternar modo oscuro
+  const toggleDarkMode = useCallback(() => {
+    setDarkMode((prev) => !prev)
+  }, [])
+
+  // Nombre principal extraído para la marca
+  const primerNombre = personalData.nombre.split(' ')[0]
 
   return (
     <div className="portfolio-container">
-      {/* NAVBAR CON BOTÓN DE TEMA */}
+      {/* BARRA DE NAVEGACIÓN */}
       <header className="navbar">
-        <div className="nav-brand">&lt;{personalData.nombre.split(' ')[0]} /&gt;</div>
-        
-        <nav className="nav-links" style={{ display: 'flex', alignItems: 'center', gap: '20px' }}>
+        <div className="nav-brand">&lt;{primerNombre} /&gt;</div>
+
+        <nav className="nav-links">
           <a href="#sobre-mi">Sobre mí</a>
           <a href="#experiencia">Trayectoria</a>
           <a href="#proyectos">Proyectos</a>
           <a href="#contacto">Contacto</a>
 
           {/* BOTÓN MODO CLARO / OSCURO */}
-          <button 
-            type="button" 
+          <button
+            type="button"
             className="theme-toggle-btn"
-            onClick={() => setDarkMode(!darkMode)}
+            onClick={toggleDarkMode}
+            aria-label="Cambiar tema"
           >
             {darkMode ? ' Claro' : ' Oscuro'}
           </button>
         </nav>
       </header>
 
-      {/* HERO SECTION / PRESENTACIÓN */}
+      {/* HERO SECTION */}
       <section id="sobre-mi" className="hero-section">
-        <div className="hero-content">
-          <span className="badge-status">🟢 Disponible para proyectos & prácticas</span>
-          <h1 className="hero-title">{personalData.nombre}</h1>
-          <h2 className="hero-subtitle">
-            {personalData.carrera} <span>• {personalData.universidad}</span>
-          </h2>
-          <p className="hero-description">{personalData.presentacion}</p>
+        <div className="hero-layout">
+          {/* INFORMACIÓN PRINCIPAL */}
+          <div className="hero-content">
+            <span className="badge-status"> Disponible para proyectos & prácticas</span>
+            <h1 className="hero-title">{personalData.nombre}</h1>
+            <h2 className="hero-subtitle">
+              {personalData.carrera} <span>{personalData.universidad}</span>
+            </h2>
+            <p className="hero-description">{personalData.presentacion}</p>
 
-          {/* MÉTRICAS DESTACADAS */}
-          <div className="stats-container">
-            {personalData.stats.map((stat, i) => (
-              <div key={i} className="stat-card">
-                <h4>{stat.value}</h4>
-                <p>{stat.label}</p>
-              </div>
-            ))}
-          </div>
-
-          {/* HABILIDADES */}
-          <div className="skills-container">
-            <h3>Habilidades Técnicas</h3>
-            <div className="skills-grid">
-              {personalData.habilidades.map((skill, index) => (
-                <span key={index} className="skill-chip">
-                  {skill}
-                </span>
+            {/* MÉTRICAS DESTACADAS */}
+            <div className="stats-container">
+              {personalData.stats.map((stat, i) => (
+                <div key={i} className="stat-card">
+                  <h4>{stat.value}</h4>
+                  <p>{stat.label}</p>
+                </div>
               ))}
+            </div>
+
+            {/* HABILIDADES */}
+            <div className="skills-container">
+              <h3>Habilidades Técnicas</h3>
+              <div className="skills-grid">
+                {personalData.habilidades.map((skill, index) => (
+                  <span key={index} className="skill-chip">
+                    {skill}
+                  </span>
+                ))}
+              </div>
+            </div>
+
+            <div className="hero-actions">
+              <a href="#proyectos" className="btn-primary">
+                Explorar Proyectos
+              </a>
+              <button
+                type="button"
+                className="btn-secondary"
+                onClick={() => setLikes((prev) => prev + 1)}
+              >
+                🎓 Valorar Portafolio ({likes})
+              </button>
             </div>
           </div>
 
-          <div className="hero-actions">
-            <a href="#proyectos" className="btn-primary">Explorar Proyectos</a>
-            <button
-              type="button"
-              className="btn-secondary"
-              onClick={() => setLikes((prev) => prev + 1)}
-            >
-              🎓 Valorar Portafolio ({likes})
-            </button>
+          {/* FOTO DE PERFIL */}
+          <div className="avatar-container">
+            <img src={fotoPerfil} alt={`Foto de perfil de ${personalData.nombre}`} className="avatar-img" />
           </div>
         </div>
       </section>
 
-      {/* SECCIÓN DE EDUCACIÓN / TIMELINE */}
+      {/* TRAYECTORIA / EDUCACIÓN */}
       <section id="experiencia" className="section-container">
         <h2 className="section-title">Educación & Trayectoria</h2>
         <p className="section-subtitle">Mi camino académico y aprendizaje continuo</p>
@@ -108,16 +130,16 @@ function App() {
         </div>
       </section>
 
-      {/* SECCIÓN DE PROYECTOS CON FILTROS */}
+      {/* PROYECTOS CON FILTRO */}
       <section id="proyectos" className="section-container">
         <h2 className="section-title">Proyectos Destacados</h2>
         <p className="section-subtitle">Filtra por categoría para explorar mis trabajos</p>
 
-        {/* BOTONES DE FILTRO */}
         <div className="filter-container">
-          {categorias.map((cat) => (
+          {CATEGORIAS.map((cat) => (
             <button
               key={cat}
+              type="button"
               className={`filter-btn ${filtro === cat ? 'active' : ''}`}
               onClick={() => setFiltro(cat)}
             >
@@ -134,16 +156,18 @@ function App() {
               </div>
               <h3 className="card-title">{proyecto.titulo}</h3>
               <p className="card-description">{proyecto.descripcion}</p>
-              
+
               <div className="card-techs">
                 {proyecto.tecnologias.map((tech, i) => (
-                  <span key={i} className="tech-badge">{tech}</span>
+                  <span key={i} className="tech-badge">
+                    {tech}
+                  </span>
                 ))}
               </div>
 
-              <a 
-                href={proyecto.githubUrl} 
-                target="_blank" 
+              <a
+                href={proyecto.githubUrl}
+                target="_blank"
                 rel="noopener noreferrer"
                 className="card-link"
               >
@@ -154,13 +178,18 @@ function App() {
         </div>
       </section>
 
-      {/* SECCIÓN DE CONTACTO */}
+      {/* CONTACTO */}
       <section id="contacto" className="section-container contact-section">
         <h2 className="section-title">¿Hablamos?</h2>
         <p className="section-subtitle">Puedes escribirme o contactarme por mis redes profesionales</p>
 
         <div className="contact-links">
-          <a href={personalData.contacto.github} target="_blank" rel="noopener noreferrer" className="contact-card">
+          <a
+            href={personalData.contacto.github}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="contact-card"
+          >
             <span className="contact-icon">💻</span>
             <div>
               <strong>GitHub</strong>
@@ -168,7 +197,12 @@ function App() {
             </div>
           </a>
 
-          <a href={personalData.contacto.linkedin} target="_blank" rel="noopener noreferrer" className="contact-card">
+          <a
+            href={personalData.contacto.linkedin}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="contact-card"
+          >
             <span className="contact-icon">💼</span>
             <div>
               <strong>LinkedIn</strong>
