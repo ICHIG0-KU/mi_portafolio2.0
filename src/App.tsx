@@ -29,14 +29,15 @@ function App() {
     setDarkMode((prev) => !prev)
   }, [])
 
-  // Nombre principal extraído para la marca
-  const primerNombre = personalData.nombre.split(' ')[0]
+  
 
   return (
     <div className="portfolio-container">
       {/* BARRA DE NAVEGACIÓN */}
       <header className="navbar">
-        <div className="nav-brand">&lt;{primerNombre} /&gt;</div>
+        <div className="brand">
+          <h1></h1>
+        </div>
 
         <nav className="nav-links">
           <a href="#sobre-mi">Sobre mí</a>
